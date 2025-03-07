@@ -1,7 +1,7 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 
-console.log("应用版本：", process.platform, process.versions);
+console.log("应用平台及版本：", process.platform, process.versions);
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -22,9 +22,19 @@ function createWindow () {
   // win.loadURL('https://fanyi.youdao.com/index.html#/TextTranslate');
 
   win.setAlwaysOnTop(false, 'screen-saver');
+
+  // 打开Chromium开发者工具面板
+  // setTimeout(() => {
+  //   win.webContents.openDevTools();
+  // }, 5000);
 }
 
 app.whenReady().then(() => {
+  ipcMain.handle('ping', (event, eventArg) => {
+    // console.log('ping-arg: ', eventArg);
+    return `pong ${eventArg?.arg1} ${eventArg?.arg2}`;
+  });
+
   createWindow();
 
   // 创建应用程序菜单
@@ -46,6 +56,7 @@ app.whenReady().then(() => {
     console.log("activate!");
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+
 });
 
 app.on('window-all-closed', () => {
