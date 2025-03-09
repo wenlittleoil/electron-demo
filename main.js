@@ -8,7 +8,8 @@ function createWindow () {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      contextIsolation: true, // 启用上下文隔离
+      preload: path.join(__dirname, 'preload.js'), // 指定预加载脚本
     },
     frame: true, // 窗口左上角显示系统标准的最小化、最大化和关闭按钮等顶部栏外框区域
     fullscreen: false,
