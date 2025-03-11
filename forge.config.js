@@ -4,12 +4,19 @@ const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 module.exports = {
   packagerConfig: {
     asar: true,
+    // 应用程序图标
+    icon: 'src/assets/icons/app-icon',
+    // 应用名称，不设置的话默认取package.json中的name字段
+    name: 'My-Electron-Demo-macOS', // macOS生效
   },
   rebuildConfig: {},
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        // 应用名称，不设置的话默认取package.json中的name字段
+        name: 'My-Electron-Demo-Windows', // Windows生效
+      },
     },
     {
       name: '@electron-forge/maker-zip',
@@ -17,11 +24,15 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-deb',
-      config: {},
+      config: {
+        productName: 'My-Electron-Demo-Linux', // Linux生效
+      },
     },
     {
       name: '@electron-forge/maker-rpm',
-      config: {},
+      config: {
+        productName: 'My-Electron-Demo-Linux', // Linux生效
+      },
     },
   ],
   plugins: [
