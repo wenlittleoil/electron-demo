@@ -6,16 +6,15 @@ module.exports = {
     asar: true,
     // 应用程序图标
     icon: 'src/assets/icons/app-icon',
-    // 应用名称，不设置的话默认取package.json中的name字段
-    name: 'My-Electron-Demo-macOS', // macOS生效
+    // 不设置的话默认取package.json中的name字段
+    name: 'My-Electron-Demo-macOS', // 应用名称，macOS生效
   },
   rebuildConfig: {},
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
       config: {
-        // 应用名称，不设置的话默认取package.json中的name字段
-        name: 'My-Electron-Demo-Windows', // Windows生效
+        name: 'My-Electron-Demo-Windows', // 应用名称，Windows生效
       },
     },
     {
@@ -25,13 +24,13 @@ module.exports = {
     {
       name: '@electron-forge/maker-deb',
       config: {
-        productName: 'My-Electron-Demo-Linux', // Linux生效
+        productName: 'My-Electron-Demo-Linux', // 应用名称，Linux生效
       },
     },
     {
       name: '@electron-forge/maker-rpm',
       config: {
-        productName: 'My-Electron-Demo-Linux', // Linux生效
+        productName: 'My-Electron-Demo-Linux', // 应用名称，Linux生效
       },
     },
   ],
