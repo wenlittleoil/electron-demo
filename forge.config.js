@@ -22,6 +22,13 @@ module.exports = {
       platforms: ['darwin'],
     },
     {
+      name: '@electron-forge/maker-dmg', // 内置依赖electron-installer-dmg
+      config: {
+        background: './src/assets/icons/app-icon.png',
+        format: 'ULFO',
+      },
+    },
+    {
       name: '@electron-forge/maker-deb',
       config: {
         productName: 'My-Electron-Demo-Linux', // 应用名称，Linux生效
