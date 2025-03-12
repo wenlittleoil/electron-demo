@@ -7,7 +7,7 @@ module.exports = {
     // 应用程序图标
     icon: 'src/assets/icons/app-icon',
     // 不设置的话默认取package.json中的name字段
-    name: 'My-Electron-Demo-macOS', // 应用名称，macOS生效
+    name: 'My-Electron-Demo', // 应用名称，macOS生效
   },
   rebuildConfig: {},
   makers: [
@@ -22,9 +22,12 @@ module.exports = {
       platforms: ['darwin'],
     },
     {
-      name: '@electron-forge/maker-dmg', // 内置依赖electron-installer-dmg
+      name: '@electron-forge/maker-dmg', // 内置依赖electron-installer-dmg，只能在macOS开发机上构建
       config: {
-        background: './src/assets/icons/app-icon.png',
+        // dmg安装向导窗口配置
+        name: 'My-Electron-Demo-macOS', // 窗口标题
+        background: './src/assets/icons/app-installer-bg.png', // 窗口背景图片
+        icon: './src/assets/icons/app-icon.icns', // 窗口显示应用图标
         format: 'ULFO',
       },
     },
