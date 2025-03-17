@@ -34,6 +34,14 @@
   <div class="content">桌面应用开发测试demo</div>
   <p id="versions"></p>
   <p id="global-data"></p>
+  <p id="api-server-ret"></p>
 </body>
 <script src="./renderer.js"></script>
+<script>
+  fetch('http://localhost:3000')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('api-server-ret').innerText = JSON.stringify(data);
+    });
+</script>
 </html>
