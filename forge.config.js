@@ -78,6 +78,6 @@ module.exports = {
         prerelease: false,
         draft: true
       }
-    }
+    },
   ],
 };
