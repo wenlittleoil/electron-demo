@@ -12,3 +12,10 @@ cnpm install && npm start
 1. 开发：`npm run start`
 2. 打包构建：`npm run make` 或 `DEBUG=electron-forge:* npm run make` 生成 `out`文件夹
 
+## 使用@electron-forge/publisher-github自动化发布到GitHub远程
+1. 参考文档：https://www.electronjs.org/zh/docs/latest/tutorial/%E6%8E%A8%E9%80%81%E6%9B%B4%E6%96%B0%E6%95%99%E7%A8%8B
+2. 编辑`forge.config.js`，配置GitHub远程仓库`publishers - @electron-forge/publisher-github - config - repository`
+3. 在macOS上`vim ~/.bash_profile`设置环境变量`export GITHUB_TOKEN=your-github-token`
+4. `source ~/.bash_profile`后，验证是否设置成功`echo $GITHUB_TOKEN`
+5. `npm run publish`
+
