@@ -1,7 +1,11 @@
 {
   "name": "MyElectronDemo",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wenlittleoil/electron-demo.git"
+  },
   "scripts": {
     "dev": "electron .",
     "start": "electron-forge start",
@@ -27,6 +31,7 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1",
-    "koa": "^2.16.0"
+    "koa": "^2.16.0",
+    "update-electron-app": "^2.0.1"
   }
 }

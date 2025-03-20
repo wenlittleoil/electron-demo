@@ -67,3 +67,9 @@ app.on('window-all-closed', () => {
   }
 });
 
+/**
+ * Electron官方团队为GitHub开源项目提供的自动更新模块
+ * 通过部署自动更新服务update.electronjs.org，检查GitHub Releases是否有新版本可用，从而实现自动更新
+ */
+require('update-electron-app')();
+
