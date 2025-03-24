@@ -11,3 +11,7 @@ if (globalDataEle) {
     console.log(result);
   });
 }
+
+document.getElementById("send-event-to-main-process")?.addEventListener('click', () => {
+  window.customGlobalField.hello();
+});

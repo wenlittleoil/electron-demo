@@ -28,5 +28,5 @@ contextBridge.exposeInMainWorld("customGlobalField", {
     arg1,
     arg2: 2,
   }),
-  
+  hello: () => ipcRenderer.send('hello', 'world'),
 });

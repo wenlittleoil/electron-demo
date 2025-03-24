@@ -33,7 +33,16 @@ function createWindow () {
 app.whenReady().then(() => {
   ipcMain.handle('ping', (event, eventArg) => {
     // console.log('ping-arg: ', eventArg);
+
+    const webContents = event.sender;
+    const win = BrowserWindow.fromWebContents(webContents);
+    win.setTitle(`从渲染网页来设置窗口标题：${eventArg?.arg1}-${eventArg?.arg2}`);
+
     return `pong ${eventArg?.arg1} ${eventArg?.arg2}`;
+  });
+
+  ipcMain.on('hello', (event, eventArg) => {
+    console.log('主进程收到hello事件', eventArg);
   });
 
   createWindow();
