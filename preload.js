@@ -28,5 +28,9 @@ contextBridge.exposeInMainWorld("customGlobalField", {
     arg1,
     arg2: 2,
   }),
+  openFile: () => ipcRenderer.invoke('open-file'),
   hello: () => ipcRenderer.send('hello', 'world'),
+  onMessageFromMain: (callback) => {
+    ipcRenderer.on('msg-from-main', (event, arg) => callback(arg));
+  },
 });

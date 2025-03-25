@@ -1,7 +1,14 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { dialog } = require('electron/main');
 const path = require('path');
 
 console.log("应用平台及版本：", process.platform, process.versions);
+
+const openFile = async () => {
+  const { canceled, filePaths } = await dialog.showOpenDialog();
+  if (canceled) return;
+  return filePaths[0];
+}
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -24,6 +31,20 @@ function createWindow () {
 
   win.setAlwaysOnTop(false, 'screen-saver');
 
+  // 从主进程UI界面发送消息到网页渲染进程
+  const menu = Menu.buildFromTemplate([
+    {
+      label: app.name,
+      submenu: [
+        {
+          click: () => win.webContents.send('msg-from-main', 888),
+          label: 'Send Msg to Renderer',
+        },
+      ]
+    }
+  ]);
+  Menu.setApplicationMenu(menu);
+
   // 打开Chromium开发者工具面板
   // setTimeout(() => {
   //   win.webContents.openDevTools();
@@ -34,14 +55,16 @@ app.whenReady().then(() => {
   ipcMain.handle('ping', (event, eventArg) => {
     // console.log('ping-arg: ', eventArg);
 
-    const webContents = event.sender;
-    const win = BrowserWindow.fromWebContents(webContents);
-    win.setTitle(`从渲染网页来设置窗口标题：${eventArg?.arg1}-${eventArg?.arg2}`);
-
     return `pong ${eventArg?.arg1} ${eventArg?.arg2}`;
   });
 
+  ipcMain.handle('open-file', openFile);
+
   ipcMain.on('hello', (event, eventArg) => {
+    const webContents = event.sender;
+    const win = BrowserWindow.fromWebContents(webContents);
+    win.setTitle(`从渲染网页来设置窗口标题：${eventArg}`);
+
     console.log('主进程收到hello事件', eventArg);
   });
 

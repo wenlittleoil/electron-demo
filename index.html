@@ -41,13 +41,22 @@
       发送事件到主进程
     </button>
   </p>
+  <p>
+    <button id="open-file">
+      打开系统文件对话框
+    </button>
+    <div id="open-file-result"></div>
+  </p>
+  <p>
+    <input type="file" id="input-file" value="web上传文件" />
+  </p>
 </body>
 <script src="./renderer.js"></script>
 <script>
-  fetch('http://localhost:3000')
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById('api-server-ret').innerText = JSON.stringify(data);
-    });
+  // fetch('http://localhost:3000')
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     document.getElementById('api-server-ret').innerText = JSON.stringify(data);
+  //   });
 </script>
 </html>
