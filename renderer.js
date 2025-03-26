@@ -27,3 +27,4 @@ window.customGlobalField.onMessageFromMain((arg) => {
   ele.innerText = `网页渲染进程收到来自主进程的消息：${arg}`;
   document.body.appendChild(ele);
 });
+

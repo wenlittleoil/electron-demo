@@ -34,3 +34,5 @@ contextBridge.exposeInMainWorld("customGlobalField", {
     ipcRenderer.on('msg-from-main', (event, arg) => callback(arg));
   },
 });
+
+

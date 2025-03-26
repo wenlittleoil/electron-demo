@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, MessageChannelMain } = require('electron');
 const { dialog } = require('electron/main');
 const path = require('path');
 
@@ -11,12 +11,15 @@ const openFile = async () => {
 }
 
 function createWindow () {
+  // 主窗口（渲染进程一）
   const win = new BrowserWindow({
+    show: true, // 是否展示窗口
     width: 800,
     height: 600,
     webPreferences: {
-      contextIsolation: true, // 启用上下文隔离
+      contextIsolation: true, // 是否启用上下文隔离
       preload: path.join(__dirname, 'preload.js'), // 指定预加载脚本
+      sandbox: true, // 该渲染进程启用沙盒模式
     },
     frame: true, // 窗口左上角显示系统标准的最小化、最大化和关闭按钮等顶部栏外框区域
     fullscreen: false,
@@ -41,7 +44,41 @@ function createWindow () {
           label: 'Send Msg to Renderer',
         },
       ]
-    }
+    },
+    {
+      label: "菜单2",
+      submenu: [
+        {
+          label: "菜单2-1",
+          click: () => {
+            console.log("菜单2-1");
+          }
+        },
+        {
+          label: "菜单2-2",
+          click: () => {
+            console.log("菜单2-2");
+          }
+        },
+      ]
+    },
+    {
+      label: "菜单3",
+      submenu: [],
+    },
+    {
+      // 自定义应用菜单后，原来默认的开发者工具快捷键失效，需要手动添加
+      label: '开发者',
+      submenu: [
+        {
+          label: '切换开发者工具',
+          accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
+          click: () => {
+            BrowserWindow.getFocusedWindow().webContents.toggleDevTools();
+          }
+        }
+      ]
+    },
   ]);
   Menu.setApplicationMenu(menu);
 
@@ -49,8 +86,11 @@ function createWindow () {
   // setTimeout(() => {
   //   win.webContents.openDevTools();
   // }, 5000);
+
 }
 
+// 全局所有渲染器均启用沙盒模式
+app.enableSandbox();
 app.whenReady().then(() => {
   ipcMain.handle('ping', (event, eventArg) => {
     // console.log('ping-arg: ', eventArg);
@@ -69,21 +109,6 @@ app.whenReady().then(() => {
   });
 
   createWindow();
-
-  // 创建应用程序菜单
-  // const isMac = process.platform === 'darwin';
-  // const template = [
-  //   ...(isMac ? [{
-  //     label: app.name,
-  //     submenu: [
-  //       { role: 'about' }, // 关于菜单
-  //       { type: 'separator' },
-  //       { role: 'quit' } // 退出菜单
-  //     ]
-  //   }] : [])
-  // ];
-  // const menu = Menu.buildFromTemplate(template);
-  // Menu.setApplicationMenu(menu);
 
   app.on('activate', () => {
     console.log("activate!");
