@@ -4,6 +4,8 @@ const path = require('path');
 
 console.log("应用平台及版本：", process.platform, process.versions);
 
+// process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
+
 const openFile = async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog();
   if (canceled) return;
@@ -18,6 +20,7 @@ function createWindow () {
     height: 600,
     webPreferences: {
       contextIsolation: true, // 是否启用上下文隔离
+      nodeIntegration: false, // 是否启用Node.js集成
       preload: path.join(__dirname, 'preload.js'), // 指定预加载脚本
       sandbox: true, // 该渲染进程启用沙盒模式
     },
