@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, ipcMain, MessageChannelMain } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, MessageChannelMain, nativeTheme } = require('electron');
 const { dialog } = require('electron/main');
 const path = require('path');
 
@@ -16,8 +16,8 @@ function createWindow () {
   // 主窗口（渲染进程一）
   const win = new BrowserWindow({
     show: true, // 是否展示窗口
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 800,
     webPreferences: {
       contextIsolation: true, // 是否启用上下文隔离
       nodeIntegration: false, // 是否启用Node.js集成
