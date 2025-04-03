@@ -31,7 +31,12 @@ function createWindow () {
   });
 
   // load a local HTML file
-  win.loadFile('index.html');
+  // win.loadFile('index.html');
+
+  // integrate with a local Create-React-App project
+  // win.loadFile('main-window/build/index.html');
+  win.loadURL('http://localhost:3000');
+
   // load a remote URL
   // win.loadURL('https://fanyi.youdao.com/index.html#/TextTranslate');
 

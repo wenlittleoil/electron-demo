@@ -7,13 +7,14 @@
     "url": "https://github.com/wenlittleoil/electron-demo.git"
   },
   "scripts": {
-    "dev": "electron .",
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
     "server:dev": "nodemon server/app.js",
-    "server:prod": "node server/app.js"
+    "server:prod": "node server/app.js",
+    "dev:main-window": "cd main-window && npm run start",
+    "build:main-window": "cd main-window && npm run build"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.7.0",
