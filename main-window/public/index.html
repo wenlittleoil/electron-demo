@@ -25,6 +25,21 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <!-- 设置CSP策略 -->
+    <meta 
+      http-equiv="Content-Security-Policy" 
+      content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline';
+        style-src 'self' 'unsafe-inline';
+        img-src 'self' data:;
+        font-src 'self';
+        connect-src 'self';
+        media-src 'self';
+        object-src 'none';
+        frame-src 'none';
+      "
+    />
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

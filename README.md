@@ -14,8 +14,8 @@
 
 ## 相关命令
 1. 安装：进入项目根目录，先运行`npm i`，然后另开终端运行`cd main-window && npm i`
-2. 开发：进入项目根目录，先运行`npm dev:main-window`，然后另开终端运行`npm start`
-3. 打包构建：进入项目根目录，先运行`npm build:main-window`，然后另开终端运行`npm run make` 或 `DEBUG=electron-forge:* npm run make` 生成 `out`文件夹
+2. 开发：进入项目根目录，先运行`npm run dev:main-window`，然后另开终端运行`npm run start`
+3. 打包构建：进入项目根目录，先运行`npm run build:main-window`，然后另开终端运行`npm run make:staging` 或 `DEBUG=electron-forge:* npm run make:staging` 生成 `out`文件夹
 
 ## 使用@electron-forge/publisher-github自动化打包并发布到GitHub远程仓库Releases
 1. 参考文档：https://www.electronjs.org/zh/docs/latest/tutorial/%E6%8E%A8%E9%80%81%E6%9B%B4%E6%96%B0%E6%95%99%E7%A8%8B

@@ -34,8 +34,14 @@ function createWindow () {
   // win.loadFile('index.html');
 
   // integrate with a local Create-React-App project
-  // win.loadFile('main-window/build/index.html');
-  win.loadURL('http://localhost:3000');
+  if (process.env.CUSTOM_ENV === 'local') {
+    // 本地开发环境
+    const LOCAL_DEV_MAIN_WINDOW_HOST = 'http://localhost:3000';
+    win.loadURL(LOCAL_DEV_MAIN_WINDOW_HOST);
+  } else {
+    // 测试或生产包环境
+    win.loadFile('main-window/build/index.html');
+  }
 
   // load a remote URL
   // win.loadURL('https://fanyi.youdao.com/index.html#/TextTranslate');

@@ -7,9 +7,10 @@
     "url": "https://github.com/wenlittleoil/electron-demo.git"
   },
   "scripts": {
-    "start": "electron-forge start",
+    "start": "cross-env CUSTOM_ENV=local electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make",
+    "make:staging": "cross-env CUSTOM_ENV=staging electron-forge make",
+    "make:production": "cross-env CUSTOM_ENV=production electron-forge make",
     "publish": "electron-forge publish",
     "server:dev": "nodemon server/app.js",
     "server:prod": "node server/app.js",
@@ -27,6 +28,7 @@
     "@electron-forge/plugin-fuses": "^7.7.0",
     "@electron-forge/publisher-github": "^7.7.0",
     "@electron/fuses": "^1.8.0",
+    "cross-env": "^7.0.3",
     "electron": "13.6.9",
     "nodemon": "^3.1.9"
   },
