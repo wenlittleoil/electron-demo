@@ -36,11 +36,11 @@ function createWindow () {
   // integrate with a local Create-React-App project
   if (process.env.CUSTOM_ENV === 'local') {
     // 本地开发环境
-    const LOCAL_DEV_MAIN_WINDOW_HOST = 'http://localhost:3000';
+    const LOCAL_DEV_MAIN_WINDOW_HOST = 'http://localhost:5173';
     win.loadURL(LOCAL_DEV_MAIN_WINDOW_HOST);
   } else {
     // 测试或生产包环境
-    win.loadFile('main-window/build/index.html');
+    win.loadFile('main-window/dist/index.html');
   }
 
   // load a remote URL
@@ -142,5 +142,5 @@ app.on('window-all-closed', () => {
  * Electron官方团队为GitHub开源项目提供的自动更新模块
  * 通过部署自动更新服务update.electronjs.org，检查GitHub Releases是否有新版本可用，从而实现自动更新
  */
-require('update-electron-app')();
+// require('update-electron-app')();
 

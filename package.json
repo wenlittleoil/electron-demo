@@ -14,7 +14,7 @@
     "publish": "electron-forge publish",
     "server:dev": "nodemon server/app.js",
     "server:prod": "node server/app.js",
-    "dev:main-window": "cd main-window && npm run start",
+    "dev:main-window": "cd main-window && npm run dev",
     "build:main-window": "cd main-window && npm run build"
   },
   "devDependencies": {
