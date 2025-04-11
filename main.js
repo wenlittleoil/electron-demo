@@ -36,7 +36,7 @@ function createWindow () {
   // integrate with a local Create-React-App project
   if (process.env.CUSTOM_ENV === 'local') {
     // 本地开发环境
-    const LOCAL_DEV_MAIN_WINDOW_HOST = 'http://localhost:5173';
+    const LOCAL_DEV_MAIN_WINDOW_HOST = 'http://localhost:5173/examples/dark-mode';
     win.loadURL(LOCAL_DEV_MAIN_WINDOW_HOST);
   } else {
     // 测试或生产包环境

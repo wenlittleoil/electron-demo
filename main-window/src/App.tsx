@@ -1,38 +1,18 @@
 import { useState } from 'react'
 import {
   createBrowserRouter,
-  NavLink,
   Outlet,
   RouterProvider,
 } from "react-router";
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import styles from './App.module.scss';
 import DarkMode from './pages/dark-mode'
 import Devices from './pages/devices'
-
-function Examples() {
-  return (
-    <div>
-      <div 
-        className="nav-list"
-        style={{
-          fontStyle: 'italic',
-        }}
-      >
-        <NavLink to="/examples/dark-mode" end>
-          Dark Mode
-        </NavLink>
-        <NavLink to="/examples/devices" end>
-          Device Access
-        </NavLink>
-      </div>
-      <div>
-        <Outlet />
-      </div>
-    </div>
-  );
-}
+import { 
+  Examples,
+} from './containers/layouts';
+import NavLink from './components/NavLink';
 
 const router = createBrowserRouter([
   {
@@ -40,7 +20,7 @@ const router = createBrowserRouter([
     element: (
       <div>
         <div 
-          className="nav-list" 
+          className={styles["nav-list"]}
           style={{
             fontSize: '18px',
           }}
@@ -61,6 +41,7 @@ const router = createBrowserRouter([
         Component: Examples,
         children: [
           { 
+            index: true,
             path: "dark-mode",
             Component: DarkMode 
           },
