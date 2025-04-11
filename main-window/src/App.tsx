@@ -1,11 +1,10 @@
-import { useState } from 'react'
 import {
   createBrowserRouter,
   Outlet,
   RouterProvider,
 } from "react-router";
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
 import styles from './App.module.scss';
 import DarkMode from './pages/dark-mode'
 import Devices from './pages/devices'
