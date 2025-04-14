@@ -2,7 +2,7 @@ const { app, BrowserWindow, Menu, ipcMain, MessageChannelMain, nativeTheme } = r
 const { dialog } = require('electron/main');
 const path = require('path');
 
-console.log("应用平台及版本：", process.platform, process.versions);
+// console.log("应用平台及版本：", process.platform, process.versions);
 
 // process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
@@ -27,7 +27,11 @@ function createWindow () {
     frame: true, // 窗口左上角显示系统标准的最小化、最大化和关闭按钮等顶部栏外框区域
     fullscreen: false,
     alwaysOnTop: false,
-    backgroundColor: '#000000'
+    /**
+     * 设置启动窗口瞬间的主题色
+     * nativeTheme指的是electron应用主题色，启动时默认采用系统主题色，但跟系统主题色互相独立
+     */
+    backgroundColor: nativeTheme.shouldUseDarkColors ? '#333' : '#ddd',
   });
 
   // load a local HTML file
@@ -122,8 +126,9 @@ app.whenReady().then(() => {
     console.log('主进程收到hello事件', eventArg);
   });
 
-  createWindow();
+  handleMessage();
 
+  createWindow();
   app.on('activate', () => {
     console.log("activate!");
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -143,4 +148,17 @@ app.on('window-all-closed', () => {
  * 通过部署自动更新服务update.electronjs.org，检查GitHub Releases是否有新版本可用，从而实现自动更新
  */
 // require('update-electron-app')();
+
+function handleMessage() {
+  ipcMain.handle('dark-mode:toggle', async (event) => {
+    // 切换应用主题色
+    nativeTheme.themeSource = nativeTheme.shouldUseDarkColors ? 'light' : 'dark';
+    return nativeTheme.themeSource;
+  });
+  ipcMain.handle('dark-mode:reset', async (event) => {
+    // 设置应用主题色跟随系统主题色
+    nativeTheme.themeSource = 'system';
+    return nativeTheme.themeSource;
+  });
+}
 

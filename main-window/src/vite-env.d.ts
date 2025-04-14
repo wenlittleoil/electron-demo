@@ -6,3 +6,7 @@ declare module '@/components/*' {
   const component: DefineComponent<{}, {}, any>;
   export default component;
 }
+
+interface Window {
+  darkMode: any;
+}

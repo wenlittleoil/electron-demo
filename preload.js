@@ -34,3 +34,8 @@ contextBridge.exposeInMainWorld("customGlobalField", {
     ipcRenderer.on('msg-from-main', (event, arg) => callback(arg));
   },
 });
+
+contextBridge.exposeInMainWorld("darkMode", {
+  toggle: () => ipcRenderer.invoke('dark-mode:toggle'),
+  reset: () => ipcRenderer.invoke('dark-mode:reset'),
+});
