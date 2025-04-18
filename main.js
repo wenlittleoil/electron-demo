@@ -1,6 +1,16 @@
-const { app, BrowserWindow, Menu, ipcMain, MessageChannelMain, nativeTheme } = require('electron');
+const { 
+  app, 
+  BrowserWindow, 
+  Menu, 
+  ipcMain, 
+  MessageChannelMain, 
+  nativeTheme, 
+  globalShortcut,
+} = require('electron');
 const { dialog } = require('electron/main');
 const path = require('path');
+const handleDeviceAccess = require('./src/main/handleDeviceAccess');
+const handleDarkMode = require('./src/main/handleDarkMode');
 
 // console.log("应用平台及版本：", process.platform, process.versions);
 
@@ -23,6 +33,7 @@ function createWindow () {
       nodeIntegration: false, // 是否启用Node.js集成
       preload: path.join(__dirname, 'preload.js'), // 指定预加载脚本
       sandbox: true, // 该渲染进程启用沙盒模式
+      // experimentalFeatures: true, // 启用实验性 API（包括 WebUSB）
     },
     frame: true, // 窗口左上角显示系统标准的最小化、最大化和关闭按钮等顶部栏外框区域
     fullscreen: false,
@@ -33,6 +44,8 @@ function createWindow () {
      */
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#333' : '#ddd',
   });
+
+  handleMainWindow(win);
 
   // load a local HTML file
   // win.loadFile('index.html');
@@ -94,7 +107,14 @@ function createWindow () {
           click: () => {
             BrowserWindow.getFocusedWindow().webContents.toggleDevTools();
           }
-        }
+        },
+        {
+          label: '帮助',
+          role: 'help',
+          // 快捷键英文大小写不敏感
+          accelerator: process.platform === 'darwin' ? 'Command+H' : 'Ctrl+H',
+          click: () => { console.log('Electron Help!') },
+        },
       ]
     },
   ]);
@@ -104,6 +124,13 @@ function createWindow () {
   // setTimeout(() => {
   //   win.webContents.openDevTools();
   // }, 5000);
+
+  win.webContents.on('before-input-event', (event, input) => {
+    if (input.type === 'keyDown' && input.key.toLowerCase() === 'w') {
+      console.log("捕获web键盘事件-按下W键", input);
+      event.preventDefault();
+    }
+  });
 
 }
 
@@ -126,9 +153,15 @@ app.whenReady().then(() => {
     console.log('主进程收到hello事件', eventArg);
   });
 
+  globalShortcut.register('CommandOrControl+E+G', () => {
+    // CommandOrControl 意指在macOS上使用`Command`，在Windows/Linux上使用`Control`
+    console.log('全局键盘快捷键，即使当前应用程序没有获得键盘焦点');
+  });
+
   handleMessage();
 
   createWindow();
+
   app.on('activate', () => {
     console.log("activate!");
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -149,16 +182,11 @@ app.on('window-all-closed', () => {
  */
 // require('update-electron-app')();
 
+function handleMainWindow(mainWindow) {
+  handleDeviceAccess(mainWindow);
+}
+
 function handleMessage() {
-  ipcMain.handle('dark-mode:toggle', async (event) => {
-    // 切换应用主题色
-    nativeTheme.themeSource = nativeTheme.shouldUseDarkColors ? 'light' : 'dark';
-    return nativeTheme.themeSource;
-  });
-  ipcMain.handle('dark-mode:reset', async (event) => {
-    // 设置应用主题色跟随系统主题色
-    nativeTheme.themeSource = 'system';
-    return nativeTheme.themeSource;
-  });
+  handleDarkMode();
 }
 

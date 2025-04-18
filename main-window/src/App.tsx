@@ -8,6 +8,7 @@ import {
 import styles from './App.module.scss';
 import DarkMode from './pages/dark-mode'
 import Devices from './pages/devices'
+import KeyboardShortcuts from './pages/keyboard-shortcuts'
 import { 
   Examples,
 } from './containers/layouts';
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
         <div 
           className={styles["nav-list"]}
           style={{
-            fontSize: '18px',
+            fontSize: '22px',
           }}
         >
           <NavLink to="/examples">
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
             path: "devices", 
             Component: Devices 
           },
+          {
+            path: 'keyboard-shortcuts',
+            Component: KeyboardShortcuts
+          }
         ],
       },
       {

@@ -17,6 +17,9 @@ export default function Examples() {
         <NavLink to="/examples/devices" end>
           Device Access
         </NavLink>
+        <NavLink to="/examples/keyboard-shortcuts" end>
+          Keyboard Shortcuts
+        </NavLink>
       </div>
       <div>
         <Outlet />
