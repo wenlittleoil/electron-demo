@@ -18,7 +18,7 @@ export default function Examples() {
           Device Access
         </NavLink>
         <NavLink to="/examples/keyboard-shortcuts" end>
-          Keyboard Shortcuts
+          Keyboard Shortcuts & Deep Links
         </NavLink>
       </div>
       <div>

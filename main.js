@@ -6,6 +6,7 @@ const {
   MessageChannelMain, 
   nativeTheme, 
   globalShortcut,
+  shell,
 } = require('electron');
 const { dialog } = require('electron/main');
 const path = require('path');
@@ -16,6 +17,38 @@ const handleDarkMode = require('./src/main/handleDarkMode');
 
 // process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 
+let mainWindow;
+
+if (process.defaultApp) {
+  if (process.argv.length >= 2) {
+    app.setAsDefaultProtocolClient('electron-fiddle', process.execPath, [path.resolve(process.argv[1])])
+  }
+} else {
+  app.setAsDefaultProtocolClient('electron-fiddle')
+}
+const gotTheLock = app.requestSingleInstanceLock()
+if (!gotTheLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
+    }
+    dialog.showErrorBox('Welcome Back', `You arrived from 2: ${commandLine.pop().slice(0, -1)}`);
+  });
+
+  // Create mainWindow, load the rest of the app, etc...
+  app.whenReady().then(() => {
+    afterReady();
+  });
+
+  app.on('open-url', (event, url) => {
+    dialog.showErrorBox('Welcome Back', `You arrived from 1: ${url}`);
+  });
+}
+
 const openFile = async () => {
   const { canceled, filePaths } = await dialog.showOpenDialog();
   if (canceled) return;
@@ -24,7 +57,7 @@ const openFile = async () => {
 
 function createWindow () {
   // 主窗口（渲染进程一）
-  const win = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     show: true, // 是否展示窗口
     width: 1200,
     height: 800,
@@ -45,25 +78,29 @@ function createWindow () {
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#333' : '#ddd',
   });
 
-  handleMainWindow(win);
+  handleMainWindow(mainWindow);
 
   // load a local HTML file
-  // win.loadFile('index.html');
+  // mainWindow.loadFile('index.html');
 
   // integrate with a local Create-React-App project
   if (process.env.CUSTOM_ENV === 'local') {
     // 本地开发环境
-    const LOCAL_DEV_MAIN_WINDOW_HOST = 'http://localhost:5173/examples/dark-mode';
-    win.loadURL(LOCAL_DEV_MAIN_WINDOW_HOST);
+    const LOCAL_DEV_MAIN_WINDOW_HOST = 'http://localhost:5173/#/examples/dark-mode';
+    mainWindow.loadURL(LOCAL_DEV_MAIN_WINDOW_HOST);
   } else {
     // 测试或生产包环境
-    win.loadFile('main-window/dist/index.html');
+    // 本地文件系统file协议不支持h5路由的History模式，只能使用Hash模式
+    mainWindow.loadFile('main-window/dist/index.html', {
+      query: {},
+      hash: '#/examples/dark-mode',
+    });
   }
 
   // load a remote URL
-  // win.loadURL('https://fanyi.youdao.com/index.html#/TextTranslate');
+  // mainWindow.loadURL('https://fanyi.youdao.com/index.html#/TextTranslate');
 
-  win.setAlwaysOnTop(false, 'screen-saver');
+  mainWindow.setAlwaysOnTop(false, 'screen-saver');
 
   // 从主进程UI界面发送消息到网页渲染进程
   const menu = Menu.buildFromTemplate([
@@ -71,7 +108,7 @@ function createWindow () {
       label: app.name,
       submenu: [
         {
-          click: () => win.webContents.send('msg-from-main', 888),
+          click: () => mainWindow.webContents.send('msg-from-main', 888),
           label: 'Send Msg to Renderer',
         },
       ]
@@ -122,10 +159,10 @@ function createWindow () {
 
   // 打开Chromium开发者工具面板
   // setTimeout(() => {
-  //   win.webContents.openDevTools();
+  //   mainWindow.webContents.openDevTools();
   // }, 5000);
 
-  win.webContents.on('before-input-event', (event, input) => {
+  mainWindow.webContents.on('before-input-event', (event, input) => {
     if (input.type === 'keyDown' && input.key.toLowerCase() === 'w') {
       console.log("捕获web键盘事件-按下W键", input);
       event.preventDefault();
@@ -136,10 +173,9 @@ function createWindow () {
 
 // 全局所有渲染器均启用沙盒模式
 app.enableSandbox();
-app.whenReady().then(() => {
+function afterReady() {
   ipcMain.handle('ping', (event, eventArg) => {
     // console.log('ping-arg: ', eventArg);
-
     return `pong ${eventArg?.arg1} ${eventArg?.arg2}`;
   });
 
@@ -147,8 +183,8 @@ app.whenReady().then(() => {
 
   ipcMain.on('hello', (event, eventArg) => {
     const webContents = event.sender;
-    const win = BrowserWindow.fromWebContents(webContents);
-    win.setTitle(`从渲染网页来设置窗口标题：${eventArg}`);
+    const mainWindow = BrowserWindow.fromWebContents(webContents);
+    mainWindow.setTitle(`从渲染网页来设置窗口标题：${eventArg}`);
 
     console.log('主进程收到hello事件', eventArg);
   });
@@ -166,8 +202,7 @@ app.whenReady().then(() => {
     console.log("activate!");
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
-
-});
+}
 
 app.on('window-all-closed', () => {
   // 在关闭一个应用的所有窗口后让它退出
@@ -189,4 +224,13 @@ function handleMainWindow(mainWindow) {
 function handleMessage() {
   handleDarkMode();
 }
+
+// Handle window controls via IPC
+ipcMain.on('shell:open', () => {
+  const pageDirectory = __dirname.replace('app.asar', 'app.asar.unpacked');
+  // const pagePath = path.join('file://', pageDirectory, 'index.html');
+  const pagePath = "https://www.baidu.com";
+  console.log("应用内唤起浏览器网页: ", __dirname, pageDirectory, pagePath);
+  shell.openExternal(pagePath);
+});
 

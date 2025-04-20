@@ -4,7 +4,7 @@ const index:FC<{}> = () => {
 
   async function requestUSBDevice() {
     try {
-      const device = await navigator.usb.requestDevice({
+      const device = await (navigator as any).usb.requestDevice({
         // filters: [{ vendorId: 0x05ac }], // 替换为你的设备 vendorId
         filters: [],
       });

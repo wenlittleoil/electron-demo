@@ -39,3 +39,7 @@ contextBridge.exposeInMainWorld("darkMode", {
   toggle: () => ipcRenderer.invoke('dark-mode:toggle'),
   reset: () => ipcRenderer.invoke('dark-mode:reset'),
 });
+
+contextBridge.exposeInMainWorld('shell', {
+  open: () => ipcRenderer.send('shell:open')
+});

@@ -1,5 +1,6 @@
 import {
-  createBrowserRouter,
+  // createBrowserRouter, // h5历史路由
+  createHashRouter, // hash路由
   Outlet,
   RouterProvider,
 } from "react-router";
@@ -14,7 +15,7 @@ import {
 } from './containers/layouts';
 import NavLink from './components/NavLink';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "/",
     element: (
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
         element: <div>others</div>,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <div>404 没有找到匹配的页面路由</div>,
   },
 ]);
 

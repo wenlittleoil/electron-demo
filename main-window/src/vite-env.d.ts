@@ -9,4 +9,5 @@ declare module '@/components/*' {
 
 interface Window {
   darkMode: any;
+  shell: any;
 }

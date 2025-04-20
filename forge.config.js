@@ -8,6 +8,13 @@ module.exports = {
     icon: 'src/assets/icons/app-icon',
     // 不设置的话默认取package.json中的name字段
     name: 'My-Electron-Demo', // 应用名称，macOS生效
+    protocols: [
+      {
+        // 支持在浏览器中通过自定义协议electron-fiddle打开应用
+        "name": "Electron Fiddle",
+        "schemes": ["electron-fiddle"],
+      },
+    ],
   },
   rebuildConfig: {},
   makers: [
@@ -39,6 +46,7 @@ module.exports = {
       name: '@electron-forge/maker-deb',
       config: {
         productName: 'My-Electron-Demo-Linux', // 应用名称，Linux生效
+        mimeType: ["x-scheme-handler/electron-fiddle"], // 支持在浏览器中通过自定义协议electron-fiddle打开应用
       },
     },
     {
