@@ -19,6 +19,7 @@ const handleDarkMode = require('./src/main/handleDarkMode');
 
 let mainWindow;
 
+// 将当前app设置为electron-fiddle协议的默认处理程序
 if (process.defaultApp) {
   if (process.argv.length >= 2) {
     app.setAsDefaultProtocolClient('electron-fiddle', process.execPath, [path.resolve(process.argv[1])])
@@ -26,17 +27,23 @@ if (process.defaultApp) {
 } else {
   app.setAsDefaultProtocolClient('electron-fiddle')
 }
+
+/**
+ * The return value of this method indicates whether or not this instance of your application successfully obtained the lock. 
+ * If it failed to obtain the lock, you can assume that another instance of your application is already running with the lock and exit immediately.
+ */
 const gotTheLock = app.requestSingleInstanceLock()
 if (!gotTheLock) {
   app.quit();
 } else {
+  // Windows 和 Linux 上
   app.on('second-instance', (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore()
       mainWindow.focus()
     }
-    dialog.showErrorBox('Welcome Back', `You arrived from 2: ${commandLine.pop().slice(0, -1)}`);
+    dialog.showErrorBox('Welcome Back On Windows/Linux', `You arrived from: ${commandLine.pop().slice(0, -1)}`);
   });
 
   // Create mainWindow, load the rest of the app, etc...
@@ -44,8 +51,9 @@ if (!gotTheLock) {
     afterReady();
   });
 
+  // MacOS 上
   app.on('open-url', (event, url) => {
-    dialog.showErrorBox('Welcome Back', `You arrived from 1: ${url}`);
+    dialog.showErrorBox('Welcome Back On MacOS', `You arrived from: ${url}`);
   });
 }
 
