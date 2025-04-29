@@ -165,6 +165,25 @@ function createWindow () {
   ]);
   Menu.setApplicationMenu(menu);
 
+  if (process.platform === "darwin") {
+    const dockMenu = Menu.buildFromTemplate([
+      {
+        label: '自定义程序坞菜单1',
+        click: () => {
+          console.log('自定义程序坞菜单1');
+        },
+      },
+      {
+        label: '自定义程序坞菜单2',
+        click: () => {
+          console.log('自定义程序坞菜单2');
+        },
+      },
+    ]);
+    // 在macOS上设置程序坞右键菜单
+    app.dock.setMenu(dockMenu);
+  }
+
   // 打开Chromium开发者工具面板
   // setTimeout(() => {
   //   mainWindow.webContents.openDevTools();
