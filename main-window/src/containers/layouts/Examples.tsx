@@ -20,6 +20,9 @@ export default function Examples() {
         <NavLink to="/examples/keyboard-shortcuts" end>
           Keyboard Shortcuts & Deep Links
         </NavLink>
+        <NavLink to="/examples/native-file-drag-drop" end>
+          Native File Drag & Drop
+        </NavLink>
       </div>
       <div>
         <Outlet />

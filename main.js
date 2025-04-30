@@ -12,6 +12,7 @@ const { dialog } = require('electron/main');
 const path = require('path');
 const handleDeviceAccess = require('./src/main/handleDeviceAccess');
 const handleDarkMode = require('./src/main/handleDarkMode');
+const handleDragDrop = require('./src/main/handleDragDrop');
 
 // console.log("应用平台及版本：", process.platform, process.versions);
 
@@ -180,7 +181,7 @@ function createWindow () {
         },
       },
     ]);
-    // 在macOS上设置程序坞右键菜单
+    // 在macOS上设置程序坞右键菜单，在其它平台上app.dock为undefined
     app.dock.setMenu(dockMenu);
   }
 
@@ -250,6 +251,7 @@ function handleMainWindow(mainWindow) {
 
 function handleMessage() {
   handleDarkMode();
+  handleDragDrop();
 }
 
 // Handle window controls via IPC

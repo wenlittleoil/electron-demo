@@ -43,3 +43,8 @@ contextBridge.exposeInMainWorld("darkMode", {
 contextBridge.exposeInMainWorld('shell', {
   open: () => ipcRenderer.send('shell:open')
 });
+
+contextBridge.exposeInMainWorld('dragDrop', {
+  startDrag: (fileName) => ipcRenderer.send('ondragstart', fileName)
+});
+

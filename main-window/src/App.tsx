@@ -10,6 +10,7 @@ import styles from './App.module.scss';
 import DarkMode from './pages/dark-mode'
 import Devices from './pages/devices'
 import KeyboardShortcuts from './pages/keyboard-shortcuts'
+import NativeFileDragDrop from './pages/native-file-drag-drop';
 import { 
   Examples,
 } from './containers/layouts';
@@ -53,7 +54,11 @@ const router = createHashRouter([
           {
             path: 'keyboard-shortcuts',
             Component: KeyboardShortcuts
-          }
+          }, 
+          {
+            path: 'native-file-drag-drop',
+            Component: NativeFileDragDrop,
+          },
         ],
       },
       {
