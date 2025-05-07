@@ -111,6 +111,14 @@ function createWindow () {
 
   mainWindow.setAlwaysOnTop(false, 'screen-saver');
 
+  const wc = mainWindow.webContents;
+  wc.on('did-navigate', (event, url) => {
+    console.log('导航启动:', url);
+  });
+  wc.on('did-navigate-in-page', (event, url) => {
+    console.log('页面导航发生变化:', url);
+  });
+
   // 从主进程UI界面发送消息到网页渲染进程
   const menu = Menu.buildFromTemplate([
     {
@@ -142,6 +150,39 @@ function createWindow () {
     {
       label: "菜单3",
       submenu: [],
+    },
+    {
+      label: '导航',
+      submenu: [
+        {
+          label: '前进',
+          click: () => {
+            const canGoForward = wc.canGoForward();
+            console.log("前进", canGoForward);
+            if (canGoForward) {
+              wc.goForward();
+            }
+          },
+        },
+        {
+          label: '后退',
+          click: () => {
+            const canGoBack = wc.canGoBack();
+            console.log("后退", canGoBack);
+            if (canGoBack) {
+              wc.goBack();
+            }
+          },
+        },
+        {
+          label: '历史路由栈信息',
+          click: () => {
+            const currentIndex = wc.getActiveIndex();
+            const totalLength = wc.length();
+            console.log(`当前页面索引: ${currentIndex}, 总历史记录长度: ${totalLength}`);
+          },
+        }
+      ],
     },
     {
       // 自定义应用菜单后，原来默认的开发者工具快捷键失效，需要手动添加
