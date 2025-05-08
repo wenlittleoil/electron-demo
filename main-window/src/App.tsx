@@ -11,6 +11,7 @@ import DarkMode from './pages/dark-mode'
 import Devices from './pages/devices'
 import KeyboardShortcuts from './pages/keyboard-shortcuts'
 import NativeFileDragDrop from './pages/native-file-drag-drop';
+import Notifications from './pages/notifications';
 import { 
   Examples,
 } from './containers/layouts';
@@ -58,6 +59,10 @@ const router = createHashRouter([
           {
             path: 'native-file-drag-drop',
             Component: NativeFileDragDrop,
+          },
+          {
+            path: 'notifications',
+            Component: Notifications,
           },
         ],
       },

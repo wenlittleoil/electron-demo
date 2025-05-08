@@ -6,7 +6,11 @@ function handleDeviceAccess(mainWindow) {
   _session.setPermissionRequestHandler(
     (webContents, permission, callback) => {
       console.log('请求permission: ', permission);
-      if (['usb', 'openExternal'].includes(permission)) {
+      if ([
+        'usb', 
+        'openExternal',
+        'notifications',
+      ].includes(permission)) {
         callback(true); // 允许访问
       } else {
         callback(false); // 拒绝其他权限

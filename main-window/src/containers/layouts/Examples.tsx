@@ -23,6 +23,9 @@ export default function Examples() {
         <NavLink to="/examples/native-file-drag-drop" end>
           Native File Drag & Drop
         </NavLink>
+        <NavLink to="/examples/notifications" end>
+          Notifications
+        </NavLink>
       </div>
       <div>
         <Outlet />
