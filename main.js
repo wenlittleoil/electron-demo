@@ -7,6 +7,7 @@ const {
   nativeTheme, 
   globalShortcut,
   shell,
+  Notification,
 } = require('electron');
 const { dialog } = require('electron/main');
 const path = require('path');
@@ -127,6 +128,20 @@ function createWindow () {
         {
           click: () => mainWindow.webContents.send('msg-from-main', 888),
           label: 'Send Msg to Renderer',
+        },
+        {
+          label: '发送系统通知',
+          click: () => {
+            const nf = new Notification({ 
+              title: 'Electron中发送的系统通知标题', 
+              body: 'Electron中发送的系统通知内容',
+              icon: path.join(__dirname, 'src/assets/icons/app-icon.png'),
+            });
+            nf.on('click', () => {
+              console.log('用户点击了系统通知');
+            });
+            nf.show();
+          }
         },
       ]
     },
