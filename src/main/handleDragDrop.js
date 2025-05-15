@@ -20,6 +20,8 @@ fs.writeFileSync(path.join(dir, 'drag-and-drop-2.md'), '# Second file to test dr
 
 https.get('https://img.icons8.com/ios/452/drag-and-drop.png', (response) => {
   response.pipe(icon)
+}).on('error', (e) => {
+  console.log('https.get request error: ', e);
 });
 
 module.exports = function() {

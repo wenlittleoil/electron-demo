@@ -1,0 +1,16 @@
+
+.page-devices {
+  .network-status-wrap {
+    margin-top: 24px;
+    .network-status {
+      font-weight: 600;
+      font-style: italic;
+      &.online {
+        color: green;
+      }
+      &.offline {
+        color: red;
+      }
+    }
+  }
+}
