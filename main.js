@@ -21,6 +21,9 @@ const handleDragDrop = require('./src/main/handleDragDrop');
 
 let mainWindow;
 
+// for offscreen-rendering
+app.disableHardwareAcceleration();
+
 // 将当前app设置为electron-fiddle协议的默认处理程序
 if (process.defaultApp) {
   if (process.argv.length >= 2) {
@@ -303,6 +306,7 @@ app.on('window-all-closed', () => {
 
 function handleMainWindow(mainWindow) {
   handleDeviceAccess(mainWindow);
+  handleOffscreenRendering(mainWindow);
 }
 
 function handleMessage() {
@@ -318,4 +322,12 @@ ipcMain.on('shell:open', () => {
   console.log("应用内唤起浏览器网页: ", __dirname, pageDirectory, pagePath);
   shell.openExternal(pagePath);
 });
+
+function handleOffscreenRendering(mainWindow) {
+  mainWindow.webContents.on('paint', (event, dirty, image) => {
+    // fs.writeFileSync('ex.png', image.toPNG());
+    console.log('offscreen rendering paint ', event, dirty, image);
+  });
+  mainWindow.webContents.setFrameRate(60);
+}
 
