@@ -307,6 +307,7 @@ app.on('window-all-closed', () => {
 function handleMainWindow(mainWindow) {
   handleDeviceAccess(mainWindow);
   handleOffscreenRendering(mainWindow);
+  handleProgressBar(mainWindow);
 }
 
 function handleMessage() {
@@ -330,4 +331,28 @@ function handleOffscreenRendering(mainWindow) {
   });
   mainWindow.webContents.setFrameRate(60);
 }
+
+let progressInterval;
+function handleProgressBar(mainWindow) {
+  const INCREMENT_STEP = 0.05; // 每次增加的进度条值，总共需要增加20次到达1
+  const INTERVAL = 1000; // 单位ms，20次需要20秒
+  let c = 0; // 进度条值，0-1之间的值表示进度条在加载，>1表示不确定状态
+  progressInterval = setInterval(() => {    
+    // increment or reset progress bar
+    if (c < 1) {
+      c += INCREMENT_STEP;
+      mainWindow.setProgressBar(c); 
+    } else {
+      c = 0;
+      mainWindow.setProgressBar(-1); // 重置为初始状态
+    }
+  }, INTERVAL);
+}
+
+// before the app is terminated
+app.on('before-quit', () => {
+  console.log('app will quit soon.');
+  clearInterval(progressInterval);
+});
+
 
