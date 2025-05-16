@@ -11,6 +11,7 @@ const {
 } = require('electron');
 const { dialog } = require('electron/main');
 const path = require('path');
+const os = require('os');
 const handleDeviceAccess = require('./src/main/handleDeviceAccess');
 const handleDarkMode = require('./src/main/handleDarkMode');
 const handleDragDrop = require('./src/main/handleDragDrop');
@@ -167,7 +168,18 @@ function createWindow () {
     },
     {
       label: "菜单3",
-      submenu: [],
+      submenu:[
+        // {
+        //   "label":"Open Recent",
+        //   "role":"recentdocuments",
+        //   "submenu":[
+        //     {
+        //       "label":"Clear Recent",
+        //       "role":"clearrecentdocuments"
+        //     }
+        //   ]
+        // },
+      ],
     },
     {
       label: '导航',
@@ -308,6 +320,8 @@ function handleMainWindow(mainWindow) {
   handleDeviceAccess(mainWindow);
   handleOffscreenRendering(mainWindow);
   handleProgressBar(mainWindow);
+  handleRecentDocuments(mainWindow);
+  handleRepresentedFile(mainWindow);
 }
 
 function handleMessage() {
@@ -338,6 +352,11 @@ function handleProgressBar(mainWindow) {
   const INTERVAL = 1000; // 单位ms，20次需要20秒
   let c = 0; // 进度条值，0-1之间的值表示进度条在加载，>1表示不确定状态
   progressInterval = setInterval(() => {    
+    if (mainWindow.isDestroyed()) {
+      // 关闭窗口后，清除定时器
+      clearInterval(progressInterval);
+      return;
+    }
     // increment or reset progress bar
     if (c < 1) {
       c += INCREMENT_STEP;
@@ -354,5 +373,18 @@ app.on('before-quit', () => {
   console.log('app will quit soon.');
   clearInterval(progressInterval);
 });
+
+function handleRecentDocuments() {
+  // 设置dock栏应用图标-右键-最近打开的文件列表（指的是应用自身最近打开的文件列表，不关其它应用打开的文件）
+  app.addRecentDocument(path.join(__dirname, 'src/test.js'));
+}
+
+function handleRepresentedFile(mainWindow) {
+  // 按下 Command 或 Control 键时单击标题栏图标，弹出展示目标文件的目录树
+  // mainWindow.setRepresentedFilename(os.homedir());
+  mainWindow.setRepresentedFilename(path.join(__dirname, 'src/test.js'));
+  // 设置窗口为已编辑状态
+  mainWindow.setDocumentEdited(true); 
+}
 
 
