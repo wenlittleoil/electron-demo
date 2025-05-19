@@ -81,6 +81,7 @@ function createWindow () {
       preload: path.join(__dirname, 'preload.js'), // 指定预加载脚本
       sandbox: true, // 该渲染进程启用沙盒模式
       // experimentalFeatures: true, // 启用实验性 API（包括 WebUSB）
+      spellcheck: true, // 是否启用拼写检查，默认为true
     },
     frame: true, // 窗口左上角显示系统标准的最小化、最大化和关闭按钮等顶部栏外框区域
     fullscreen: false,

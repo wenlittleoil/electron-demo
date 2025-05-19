@@ -12,6 +12,7 @@ import Devices from './pages/devices'
 import KeyboardShortcuts from './pages/keyboard-shortcuts'
 import NativeFileDragDrop from './pages/native-file-drag-drop';
 import Notifications from './pages/notifications';
+import Spellchecker from './pages/spellchecker';
 import { 
   Examples,
 } from './containers/layouts';
@@ -63,6 +64,10 @@ const router = createHashRouter([
           {
             path: 'notifications',
             Component: Notifications,
+          },
+          {
+            path: 'spellchecker',
+            Component: Spellchecker,
           },
         ],
       },

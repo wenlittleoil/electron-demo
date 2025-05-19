@@ -26,6 +26,9 @@ export default function Examples() {
         <NavLink to="/examples/notifications" end>
           Notifications
         </NavLink>
+        <NavLink to="/examples/spellchecker" end>
+          Spellchecker
+        </NavLink>
       </div>
       <div>
         <Outlet />
