@@ -2,6 +2,7 @@ const {
   app, 
   BrowserWindow, 
   Menu, 
+  MenuItem,
   ipcMain, 
   MessageChannelMain, 
   nativeTheme, 
@@ -81,7 +82,7 @@ function createWindow () {
       preload: path.join(__dirname, 'preload.js'), // 指定预加载脚本
       sandbox: true, // 该渲染进程启用沙盒模式
       // experimentalFeatures: true, // 启用实验性 API（包括 WebUSB）
-      spellcheck: true, // 是否启用拼写检查，默认为true
+      spellcheck: true, // 是否启用拼写检查，默认为true。相当于Chrome浏览器中：设置 > 高级 > 语言 > 拼写检查 -> 启用
     },
     frame: true, // 窗口左上角显示系统标准的最小化、最大化和关闭按钮等顶部栏外框区域
     fullscreen: false,
@@ -323,6 +324,7 @@ function handleMainWindow(mainWindow) {
   handleProgressBar(mainWindow);
   handleRecentDocuments(mainWindow);
   handleRepresentedFile(mainWindow);
+  handleSpellchecker(mainWindow);
 }
 
 function handleMessage() {
@@ -386,6 +388,33 @@ function handleRepresentedFile(mainWindow) {
   mainWindow.setRepresentedFilename(path.join(__dirname, 'src/test.js'));
   // 设置窗口为已编辑状态
   mainWindow.setDocumentEdited(true); 
+}
+
+function handleSpellchecker(mainWindow) {
+  // 在窗口html的编辑元素中，错误拼写单词的右键上下文菜单
+  mainWindow.webContents.on('context-menu', (event, params) => {
+    const menu = new Menu()
+    
+    // 添加每个拼写建议
+    for (const suggestion of params.dictionarySuggestions) {
+      menu.append(new MenuItem({
+        label: suggestion,
+        click: () => mainWindow.webContents.replaceMisspelling(suggestion)
+      }))
+    }
+
+    // 允许用户将拼写错误的单词添加到字典中
+    if (params.misspelledWord) {
+      menu.append(
+        new MenuItem({
+          label: 'Add to dictionary',
+          click: () => mainWindow.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord)
+        })
+      )
+    }
+  
+    menu.popup()
+  });
 }
 
 
