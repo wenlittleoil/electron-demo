@@ -391,8 +391,10 @@ function handleRepresentedFile(mainWindow) {
 }
 
 function handleSpellchecker(mainWindow) {
-  // 在窗口html的编辑元素中，错误拼写单词的右键上下文菜单
+  // 在窗口的任意位置中，右键点击时触发上下文菜单事件
   mainWindow.webContents.on('context-menu', (event, params) => {
+    console.log('用户右键菜单上下文事件', params);
+
     const menu = new Menu()
     
     // 添加每个拼写建议
@@ -403,11 +405,11 @@ function handleSpellchecker(mainWindow) {
       }))
     }
 
-    // 允许用户将拼写错误的单词添加到字典中
+    // 允许用户将拼写错误的单词添加到拼写检查器字典中
     if (params.misspelledWord) {
       menu.append(
         new MenuItem({
-          label: 'Add to dictionary',
+          label: 'Add To Dictionary',
           click: () => mainWindow.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord)
         })
       )
