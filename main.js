@@ -9,6 +9,8 @@ const {
   globalShortcut,
   shell,
   Notification,
+  nativeImage,
+  Tray,
 } = require('electron');
 const { dialog } = require('electron/main');
 const path = require('path');
@@ -303,6 +305,8 @@ function afterReady() {
     console.log("activate!");
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
+
+  addTray();
 }
 
 app.on('window-all-closed', () => {
@@ -311,6 +315,31 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+
+// 将 tray 声明为全局变量，避免被垃圾回收导致托盘图标消失
+let tray = null;
+function addTray() {
+  /**
+   * 一、什么是托盘图标？
+   * 在 MacOS 和 Ubuntu, 托盘将位于屏幕右上角上，靠近你的电池和 wifi 图标。 
+   * 在 Windows 上，托盘通常位于右下角。
+   * 
+   * 二、在macOS上如何使用托盘图标？
+   * 1.使用模板图像，不支持彩色，只支持黑或白单色图片，自适应系统亮色/暗黑主题模式，具体参考文档 https://www.electronjs.org/docs/latest/api/native-image#template-image-macos ；
+   * 2.使用非模板图像，支持彩色图片，不会自适应系统亮色/暗黑主题模式；
+   */
+  const iconPath = path.join(__dirname, 'src/assets/icons/trayMacNonTemplateImg.png');
+  const icon = nativeImage.createFromPath(iconPath);
+  console.log(
+    "设置托盘图标: ",
+    icon.isEmpty?.(), 
+    icon.isTemplateImage?.(), 
+    icon.isMacTemplateImage,
+  );
+  tray = new Tray(icon);
+  tray.setToolTip('my electron app tooltip description');
+  tray.setTitle('my electron app');
+}
 
 /**
  * Electron官方团队为GitHub开源项目提供的自动更新模块
