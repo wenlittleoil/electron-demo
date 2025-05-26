@@ -339,6 +339,20 @@ function addTray() {
   tray = new Tray(icon);
   tray.setToolTip('my electron app tooltip description');
   tray.setTitle('my electron app');
+
+  // 点击托盘图标时的触发菜单
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Item 1', type: 'radio' },
+    { label: 'Item 2', type: 'radio' },
+    { label: 'Item 3', type: 'radio', checked: true }, // 默认选中
+    { label: 'Item 4', type: 'radio' }
+  ]);
+  tray.setContextMenu(contextMenu);
+
+  // 给托盘图标添加额外的点击事件
+  tray.on('click', () => {
+    console.log('用户点击了托盘图标');
+  });
 }
 
 /**
