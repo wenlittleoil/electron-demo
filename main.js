@@ -11,6 +11,7 @@ const {
   Notification,
   nativeImage,
   Tray,
+  WebContentsView,
 } = require('electron');
 const { dialog } = require('electron/main');
 const path = require('path');
@@ -94,6 +95,8 @@ function createWindow () {
      * nativeTheme指的是electron应用主题色，启动时默认采用系统主题色，但跟系统主题色互相独立
      */
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#333' : '#ddd',
+    titleBarStyle: 'hidden', // 隐藏标题栏，使用自定义的标题栏
+    trafficLightPosition: { x: 8, y: 2 }, // 在macOS上，自定义标题栏左上角的红黄绿三个按钮位置
   });
 
   handleMainWindow(mainWindow);
@@ -462,4 +465,15 @@ function handleSpellchecker(mainWindow) {
   });
 }
 
+// app.setUserTasks是Windows平台特定的API，在macOS上为undefined
+// app.setUserTasks([
+//   {
+//     program: process.execPath,
+//     arguments: '--new-window',
+//     iconPath: process.execPath,
+//     iconIndex: 0,
+//     title: 'New Window',
+//     description: 'Create a new window'
+//   }
+// ]);
 

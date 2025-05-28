@@ -17,18 +17,14 @@ import {
   Examples,
 } from './containers/layouts';
 import NavLink from './components/NavLink';
+import classNames from "classnames";
 
 const router = createHashRouter([
   {
     path: "/",
     element: (
       <div>
-        <div 
-          className={styles["nav-list"]}
-          style={{
-            fontSize: '22px',
-          }}
-        >
+        <div className={classNames(styles["nav-list"], styles.customTopTitleBar)}>
           <NavLink to="/examples">
             示例
           </NavLink>

@@ -1,6 +1,15 @@
 
 .nav-list {
   margin-bottom: 10px;
+  &.customTopTitleBar {
+    font-size: 22px;
+    -webkit-app-region: drag; // Make the top title bar draggable
+
+    background-color: rgba($color: lightgray, $alpha: 0.2);
+    @media (prefers-color-scheme: light) {
+      background-color: rgba($color: #000, $alpha: 0.1);
+    }
+  }
   a {
     margin-right: 16px;
     color: inherit;
