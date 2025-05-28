@@ -154,6 +154,17 @@ function createWindow () {
             nf.show();
           }
         },
+        {
+          label: 'toggle模态窗口',
+          click: () => {
+            const modalWin = getModalWindow();
+            if (modalWin.isVisible()) {
+              modalWin.hide();
+            } else {
+              modalWin.show();
+            }
+          },
+        },
       ]
     },
     {
@@ -476,4 +487,36 @@ function handleSpellchecker(mainWindow) {
 //     description: 'Create a new window'
 //   }
 // ]);
+
+let subWin;
+function getModalWindow() {
+  if (subWin && !subWin.isDestroyed()) {
+    return subWin;
+  }
+  subWin = new BrowserWindow({
+    width: 300,
+    height: 200,
+    frame: false,
+    show: false, // 创建时不显示窗口
+  });
+
+  const htmlContent = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>弹窗页面</title>
+      </head>
+      <body>
+        <h1>弹窗标题</h1>
+        <p>弹窗内容弹窗内容弹窗内容弹窗内容弹窗内容弹窗内容弹窗内容</p>
+      </body>
+    </html>
+  `;
+
+  // 将 HTML 字符串内容转换为数据 URL
+  const dataUrl = `data:text/html;charset=utf-8,${encodeURIComponent(htmlContent)}`;
+  subWin.loadURL(dataUrl);
+
+  return subWin;
+}
 

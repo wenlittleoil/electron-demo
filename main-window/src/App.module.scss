@@ -3,7 +3,7 @@
   margin-bottom: 10px;
   &.customTopTitleBar {
     font-size: 22px;
-    -webkit-app-region: drag; // Make the top title bar draggable
+    -webkit-app-region: drag; // Make the custom top title bar draggable
 
     background-color: rgba($color: lightgray, $alpha: 0.2);
     @media (prefers-color-scheme: light) {
