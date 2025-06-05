@@ -7,9 +7,9 @@ import {
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import styles from './App.module.scss';
-import DarkMode from './pages/dark-mode'
-import Devices from './pages/devices'
-import KeyboardShortcuts from './pages/keyboard-shortcuts'
+import DarkMode from './pages/dark-mode';
+import Devices from './pages/devices';
+import KeyboardShortcuts from './pages/keyboard-shortcuts';
 import NativeFileDragDrop from './pages/native-file-drag-drop';
 import Notifications from './pages/notifications';
 import Spellchecker from './pages/spellchecker';
@@ -18,6 +18,10 @@ import {
 } from './containers/layouts';
 import NavLink from './components/NavLink';
 import classNames from "classnames";
+import {
+  lazyLoadRouteComponent,
+  lazyLoadRouteElement,
+} from "./utils/lazyLoadRoutes";
 
 const router = createHashRouter([
   {
@@ -43,27 +47,39 @@ const router = createHashRouter([
           { 
             index: true,
             path: "dark-mode",
-            Component: DarkMode 
+            // Component: DarkMode, 
+            // Component: lazyLoadRouteComponent("dark-mode"),
+            element: lazyLoadRouteElement("dark-mode"),
           },
           { 
             path: "devices", 
-            Component: Devices 
+            // Component: Devices,
+            // Component: lazyLoadRouteComponent("devices"),
+            element: lazyLoadRouteElement("devices"),
           },
           {
-            path: 'keyboard-shortcuts',
-            Component: KeyboardShortcuts
+            path: "keyboard-shortcuts",
+            // Component: KeyboardShortcuts,
+            // Component: lazyLoadRouteComponent("keyboard-shortcuts"),
+            element: lazyLoadRouteElement("keyboard-shortcuts"),
           }, 
           {
-            path: 'native-file-drag-drop',
-            Component: NativeFileDragDrop,
+            path: "native-file-drag-drop",
+            // Component: NativeFileDragDrop,
+            // Component: lazyLoadRouteComponent("native-file-drag-drop"),
+            element: lazyLoadRouteElement("native-file-drag-drop"),
           },
           {
-            path: 'notifications',
-            Component: Notifications,
+            path: "notifications",
+            // Component: Notifications,
+            // Component: lazyLoadRouteComponent("notifications"),
+            element: lazyLoadRouteElement("notifications"),
           },
           {
-            path: 'spellchecker',
-            Component: Spellchecker,
+            path: "spellchecker",
+            // Component: Spellchecker,
+            // Component: lazyLoadRouteComponent("spellchecker"),
+            element: lazyLoadRouteElement("spellchecker"),
           },
         ],
       },
